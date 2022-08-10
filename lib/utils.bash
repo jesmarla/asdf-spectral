@@ -24,14 +24,9 @@ sort_versions() {
 }
 
 list_github_tags() {
-  readarray -t versions_list < <(git ls-remote --tags --refs "https://github.com/stoplightio/spectral" |
+  git ls-remote --tags --refs "$GH_REPO" |
     grep -o 'refs/tags/.*' | cut -d/ -f3- |
-    sed 's/^v//')
-
-  filter='@stoplight*'
-
-  # Remove @stoplight tags from list. We only care about semantic versioned releases
-  echo ${versions_list[@]/$filter/} | tr " " "\n"
+    sed 's/^v//' # NOTE: You might want to adapt this sed to remove non-version strings from tags
 }
 
 list_all_versions() {
