@@ -38,7 +38,17 @@ download_release() {
   version="$1"
   filename="$2"
 
-  url="$GH_REPO/releases/download/v${version}/spectral-linux"
+  case $(uname -sr) in
+
+  Linux*)
+    #Linux OS
+    url="$GH_REPO/releases/download/v${version}/spectral-linux"
+    ;;
+  Darwin*)
+    # Mac OS
+    url="$GH_REPO/releases/download/v${version}/spectral-macos"
+    ;;
+  esac
 
   echo "* Downloading $TOOL_NAME release $version..."
   curl "${curl_opts[@]}" -o "$filename" -C - "$url" || fail "Could not download $url"
