@@ -2,7 +2,6 @@
 
 set -euo pipefail
 
-# TODO: Ensure this is the correct GitHub homepage where releases can be downloaded for spectral.
 GH_REPO="https://github.com/stoplightio/spectral"
 TOOL_NAME="spectral"
 TOOL_TEST="spectral --version"
@@ -43,6 +42,8 @@ download_release() {
 
   echo "* Downloading $TOOL_NAME release $version..."
   curl "${curl_opts[@]}" -o "$filename" -C - "$url" || fail "Could not download $url"
+
+  chmod 755 "$filename"
 }
 
 install_version() {
@@ -55,8 +56,8 @@ install_version() {
   fi
 
   (
-    mkdir -p "$install_path"
-    cp -r "$ASDF_DOWNLOAD_PATH"/* "$install_path"
+    mkdir -p -v "$install_path"
+    cp -r -v "$ASDF_DOWNLOAD_PATH"/* "$install_path"
 
     local tool_cmd
     tool_cmd="$(echo "$TOOL_TEST" | cut -d' ' -f1)"
