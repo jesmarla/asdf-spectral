@@ -13,4 +13,3 @@ mkdir -p "$ASDF_DOWNLOAD_PATH"
 release_file="$ASDF_DOWNLOAD_PATH/$TOOL_NAME"
 
 download_release "$ASDF_INSTALL_VERSION" "$release_file"
-
