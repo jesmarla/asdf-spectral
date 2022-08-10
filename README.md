@@ -41,7 +41,7 @@ asdf install spectral latest
 asdf global spectral latest
 
 # Now spectral commands are available
---version
+spectral --version
 ```
 
 Check [asdf](https://github.com/asdf-vm/asdf) readme for more instructions on how to
