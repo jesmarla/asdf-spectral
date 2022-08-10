@@ -66,8 +66,8 @@ install_version() {
   fi
 
   (
-    mkdir -p -v "$install_path"
-    cp -r -v "$ASDF_DOWNLOAD_PATH"/* "$install_path"
+    mkdir -p "$install_path"
+    cp -r "$ASDF_DOWNLOAD_PATH"/* "$install_path"
 
     local tool_cmd
     tool_cmd="$(echo "$TOOL_TEST" | cut -d' ' -f1)"
