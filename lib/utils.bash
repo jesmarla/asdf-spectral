@@ -33,22 +33,29 @@ list_all_versions() {
   list_github_tags
 }
 
+semVer() {
+  printf "%03d%03d%03d%03d" $(echo "$1" | tr '.' ' ')
+}
+
 download_release() {
-  local version filename url
+  local version filename url platform
   version="$1"
   filename="$2"
 
-  case $(uname -sr) in
-
-  Linux*)
-    #Linux OS
-    url="$GH_REPO/releases/download/v${version}/spectral-linux"
+  case $(uname) in
+  #Linux OS
+  Linux)
+    platform="linux"
     ;;
-  Darwin*)
-    # Mac OS
-    url="$GH_REPO/releases/download/v${version}/spectral-macos"
+  # Mac OS
+  Darwin)
+    platform="macos"
     ;;
   esac
+
+  if [[ $(semVer $version) -gt $(semVer "6.6.0") ]]; then platform+="-x64"; fi
+
+  url="$GH_REPO/releases/download/v${version}/spectral-$platform"
 
   echo "* Downloading $TOOL_NAME release $version..."
   curl "${curl_opts[@]}" -o "$filename" -C - "$url" || fail "Could not download $url"
