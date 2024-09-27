@@ -34,7 +34,7 @@ list_all_versions() {
 }
 
 semVer() {
-  printf "%03d%03d%03d%03d" $(echo "$1" | tr '.' ' ');
+  printf "%03d%03d%03d%03d" $(echo "$1" | tr '.' ' ')
 }
 
 download_release() {
@@ -43,13 +43,13 @@ download_release() {
   filename="$2"
 
   case $(uname) in
-    #Linux OS
-    Linux)
-      platform="linux"
+  #Linux OS
+  Linux)
+    platform="linux"
     ;;
-    # Mac OS
-    Darwin)
-      platform="macos"
+  # Mac OS
+  Darwin)
+    platform="macos"
     ;;
   esac
 
