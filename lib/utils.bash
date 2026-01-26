@@ -61,15 +61,15 @@ download_release() {
   esac
 
   case $(uname -m) in
-    x86_64|amd64)
-      architecture="x64"
-      ;;
-    aarch64|arm64)
-      architecture="arm64"
-      ;;
-    *)
-      fail "Unsupported architecture: $(uname -m)"
-      ;;
+  x86_64 | amd64)
+    architecture="x64"
+    ;;
+  aarch64 | arm64)
+    architecture="arm64"
+    ;;
+  *)
+    fail "Unsupported architecture: $(uname -m)"
+    ;;
   esac
 
   if [[ $(semVer $version) -gt $(semVer "6.6.0") ]]; then
