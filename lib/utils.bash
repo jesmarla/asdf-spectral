@@ -38,24 +38,48 @@ semVer() {
 }
 
 download_release() {
-  local version filename url platform
+  local version filename url platform architecture package_name
   version="$1"
   filename="$2"
 
-  case $(uname) in
+  case $(uname -s) in
   #Linux OS
-  Linux)
-    platform="linux"
+  Linux*)
+    if grep -qi alpine /etc/os-release 2>/dev/null; then
+      platform="alpine"
+    else
+      platform="linux"
+    fi
     ;;
   # Mac OS
-  Darwin)
+  Darwin*)
     platform="macos"
+    ;;
+  *)
+    fail "Unsupported OS: $(uname -s)"
     ;;
   esac
 
-  if [[ $(semVer $version) -gt $(semVer "6.6.0") ]]; then platform+="-x64"; fi
+  case $(uname -m) in
+    x86_64|amd64)
+      architecture="x64"
+      ;;
+    aarch64|arm64)
+      architecture="arm64"
+      ;;
+    *)
+      fail "Unsupported architecture: $(uname -m)"
+      ;;
+  esac
 
-  url="$GH_REPO/releases/download/v${version}/spectral-$platform"
+  if [[ $(semVer $version) -gt $(semVer "6.6.0") ]]; then
+    package_name="spectral-$platform-$architecture"
+  else
+    # For versions <= 6.6.0, architecture is not included in the package name
+    package_name="spectral-$platform"
+  fi
+
+  url="$GH_REPO/releases/download/v${version}/$package_name"
 
   echo "* Downloading $TOOL_NAME release $version..."
   curl "${curl_opts[@]}" -o "$filename" -C - "$url" || fail "Could not download $url"
