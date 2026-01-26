@@ -72,11 +72,15 @@ download_release() {
     ;;
   esac
 
-  if [[ $(semVer $version) -gt $(semVer "6.6.0") ]]; then
-    package_name="spectral-$platform-$architecture"
-  else
-    # For versions <= 6.6.0, architecture is not included in the package name
-    package_name="spectral-$platform"
+  package_name="spectral-$platform"
+
+  if [[ $(semVer "$version") -gt $(semVer "6.6.0") ]]; then
+    arch="$architecture"
+
+    # Non-standard naming for version 6.7.0
+    [[ "$version" == "6.7.0" ]] && arch="x64"
+
+    package_name="$package_name-$arch"
   fi
 
   url="$GH_REPO/releases/download/v${version}/$package_name"
